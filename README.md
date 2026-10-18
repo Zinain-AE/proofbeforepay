@@ -5,6 +5,7 @@
 ProofBeforePay is an AI agent that protects online shoppers in Bangladesh from Facebook page and F-commerce scams. It scans product posts, checks sellers against a community database, and compares the ad photo with what you actually received — in **English and বাংলা**.
 
 Built at **Hacktoberfest Dhaka 2026** with **Gemma 4** (Google AI Studio) and **Firebase**.
+
 🌐 Live demo
 👉 proofbeforepay.onrender.com
 Hosted on Render's free tier, so the first load can take about a minute while the server wakes up.
