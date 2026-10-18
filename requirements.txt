@@ -1,0 +1,4 @@
+google-genai
+firebase-admin
+gradio
+python-dotenv

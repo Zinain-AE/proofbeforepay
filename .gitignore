@@ -1,0 +1,10 @@
+.env
+serviceAccount.json
+*firebase-adminsdk*.json
+__pycache__/
+*.pyc
+venv/
+.venv/
+.gradio/
+flagged/
+compare_cache.json
