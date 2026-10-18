@@ -27,6 +27,11 @@ db = firestore.client()
 # ---------- Gemma ----------
 client = genai.Client()
 TOOL_LOG = []
+# Turn Gemma 4 "thinking" off → much faster replies (esp. with images)
+try:
+    FAST = types.ThinkingConfig(thinking_level="MINIMAL")
+except Exception:
+    FAST = None   # older SDK: run without the thinking setting
 
 
 def _key(seller_id: str) -> str:
@@ -165,7 +170,7 @@ def chat(message, history):
     resp = client.models.generate_content(
         model=MODEL,
         contents=contents,
-        config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=TOOLS),
+        config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=TOOLS, thinking_config=FAST),
     )
     reply = resp.text or "(no reply)"
     if TOOL_LOG:
@@ -255,7 +260,7 @@ def _run(parts):
         resp = client.models.generate_content(
             model=MODEL,
             contents=[types.Content(role="user", parts=parts)],
-            config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=TOOLS),
+            config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=TOOLS, thinking_config=FAST),
         )
         out = resp.text or "(Gemma returned an empty reply — please try again.)"
     except Exception as e:
@@ -355,7 +360,7 @@ def compare_ui(ad_img, got_img, seller, lang):
                 model=MODEL,
                 contents=[types.Content(role="user", parts=[_side_by_side(ad_img, got_img, 384),
                                                             types.Part(text=prompt)])],
-                config=types.GenerateContentConfig(temperature=0.2),
+                config=types.GenerateContentConfig(temperature=0.2, thinking_config=FAST),
             )
             out = (resp.text or "").strip()
         except Exception as e:
@@ -449,4 +454,7 @@ with gr.Blocks(title="ProofBeforePay") as demo:
     gr.HTML('<div id="foot">Built with Gemma 4 (Google AI Studio) · Firebase Firestore · Open source · Hacktoberfest Dhaka 2026</div>')
 
 if __name__ == "__main__":
-    demo.launch(share=True, theme=THEME, css=CSS)
+    if os.getenv("PORT"):   # running on a cloud host (Render etc.)
+        demo.launch(server_name="0.0.0.0", server_port=int(os.getenv("PORT")), theme=THEME, css=CSS)
+    else:                   # running on your laptop
+        demo.launch(share=True, theme=THEME, css=CSS)
