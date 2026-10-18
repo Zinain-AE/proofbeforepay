@@ -1,7 +1,6 @@
 # 🛡️ ProofBeforePay
 
 **Know what you're buying *before* you pay.**
-টাকা দেওয়ার আগে জেনে নিন — সেলার আসল নাকি প্রতারক।
 
 ProofBeforePay is an AI agent that protects online shoppers in Bangladesh from Facebook page and F-commerce scams. It scans product posts, checks sellers against a community database, and compares the ad photo with what you actually received — in **English and বাংলা**.
 
